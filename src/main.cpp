@@ -32,10 +32,19 @@
  *   
 */
 
+
+#include <stdio.h>
+#include <wiringPi.h>
+
 #include "KellerLD.h"
 
 
 #define I2C_BUS 0
+#define LED_EN_PIN 17
+#define LED_FAULT_PIN 18
+#define BUZZ_PIN 22
+#define LED_PIN 23
+#define TRIG_PIN 24
 
 
 KellerLD *k_sensor = new KellerLD(I2C_BUS);
@@ -49,6 +58,17 @@ KellerLD *k_sensor = new KellerLD(I2C_BUS);
  *   - Post deployment sensor measurement rate (sec (period))
  */
 
+void setup()
+{
+    wiringPiSetup();
+
+    pinMode(LED_FAULT_PIN, INPUT);
+
+    pinMode(BUZZ_PIN, OUTPUT);
+    pinMode(LED_PIN, OUTPUT);
+    pinMode(TRIG_PIN, OUTPUT);
+    pinMode(LED_EN_PIN, OUTPUT);
+}
 
 int main()
 {
@@ -58,7 +78,7 @@ int main()
     // Prior Deployment (on deck)
     //  - Regularly measure depth and temperature until below specified depth
     k_sensor->init();
-    
+
 
     // During Deployment
     //  - Start taking images for programmed duration
