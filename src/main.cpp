@@ -34,6 +34,12 @@
 
 #include "KellerLD.h"
 
+
+#define I2C_BUS 0
+
+
+KellerLD *k_sensor = new KellerLD(I2C_BUS);
+
 /* --
  * Mission details require following information
  *   - Deployment start depth (bar)
@@ -46,9 +52,13 @@
 
 int main()
 {
-    // Find out if I am a master or a slave
+    // Find out if this is a master or a slave
+
+
     // Prior Deployment (on deck)
     //  - Regularly measure depth and temperature until below specified depth
+    k_sensor->init();
+    
 
     // During Deployment
     //  - Start taking images for programmed duration
