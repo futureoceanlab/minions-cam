@@ -32,14 +32,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 -------------------------------*/ 
 
-#ifndef KELLERLD_H_BLUEROBOTICS
-#define KELLERLD_H_BLUEROBOTICS
+#ifndef KELLERLD_H
+#define KELLERLD_H
 
 
 #include <cstdint>
 
 
-class KellerLD {
+class KellerLD 
+{
 public:
 	static constexpr float Pa = 100.0f;
 	static constexpr float bar = 0.001f;
@@ -115,7 +116,6 @@ private:
 	uint16_t cust_id1;
 
 	uint16_t readMemoryMap(uint8_t mtp_address);
-	int selectDevice();
 };
 
 #endif

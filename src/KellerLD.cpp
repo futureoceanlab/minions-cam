@@ -8,6 +8,8 @@
 #include <cmath>
 
 #include "KellerLD.h"
+#include "utility.cpp"
+
 
 #define LD_ADDR                     0x40
 #define LD_REQUEST                  0xAC
@@ -47,7 +49,7 @@ void KellerLD::init()
 	}
 
 	// Initialize Keller LD
-	selectDevice();
+	selectDevice(LD_ADDR);
 
 	// Request memory map information
 	cust_id0 = readMemoryMap(LD_CUST_ID0);
@@ -77,19 +79,6 @@ void KellerLD::init()
 }
 
 
-int KellerLD::selectDevice()
-{
-   int s;
-
-    s = ioctl(fd, I2C_SLAVE, LD_ADDR);
-
-    if (s == -1)
-    {
-       perror("selectDevice");
-    }
-
-    return s;
-}
 
 
 void KellerLD::setFluidDensity(float density) {
