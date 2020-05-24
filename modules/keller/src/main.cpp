@@ -35,11 +35,14 @@
 
 #include <stdio.h>
 #include <wiringPi.h>
+#include <time.h>
+#include <chrono>
+#include <iostream>
 
 #include "KellerLD.h"
 
 
-#define I2C_BUS 0
+#define I2C_BUS 1 
 #define LED_EN_PIN 17
 #define LED_FAULT_PIN 18
 #define BUZZ_PIN 22
@@ -48,7 +51,6 @@
 
 
 KellerLD *k_sensor = new KellerLD(I2C_BUS);
-
 /* --
  * Mission details require following information
  *   - Deployment start depth (bar)
@@ -96,7 +98,7 @@ int main()
     // Prior Deployment (on deck)
     //  - Regularly measure depth and temperature until below specified depth
     k_sensor->init();
-    if (k_sensor.isInitialized())
+    if (k_sensor->isInitialized())
     {
         printf("Sensor isInitialized\n");
     }
@@ -104,9 +106,18 @@ int main()
     {
         printf("Sensor NOT connected\n");
     }
-    
-    k_sensor.readData();
-    printf("Pressure: %d\n", k_sensor.pressure());
+
+
+    std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+
+
+    k_sensor->readData();
+    k_sensor->pressure();
+    std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+
+    std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << "[µs]" << std::endl;
+    std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::nanoseconds> (end - begin).count() << "[ns]" << std::endl;
+//    printf("Pressure: %.2f\nAltitude: %.2f\n", k_sensor->pressure(), k_sensor->altitude());
 
     // During Deployment
     //  - Start taking images for programmed duration

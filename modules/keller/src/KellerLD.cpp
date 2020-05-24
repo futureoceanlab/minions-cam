@@ -8,7 +8,7 @@
 #include <cmath>
 
 #include "KellerLD.h"
-#include "utility.cpp"
+//#include "utility.cpp"
 
 
 #define LD_ADDR                     0x40
@@ -49,7 +49,7 @@ void KellerLD::init()
 	}
 
 	// Initialize Keller LD
-	selectDevice(fd, LD_ADDR);
+	selectDevice(LD_ADDR);
 
 	// Request memory map information
 	cust_id0 = readMemoryMap(LD_CUST_ID0);
@@ -97,7 +97,7 @@ void KellerLD::readData() {
 		exit(1);
 	}
 
-	usleep(9000); // Max conversion time per datasheet
+	usleep(4000); // Max conversion time per datasheet
 
 	if (read(fd, buf, 5) != 5)
 	{
@@ -121,7 +121,7 @@ int KellerLD::selectDevice(uint8_t dev_addr)
 {
    int s;
 
-    s = ioctl(I2C_SLAVE, dev_addr);
+    s = ioctl(fd, I2C_SLAVE, dev_addr);
 
     if (s == -1)
     {
@@ -143,7 +143,7 @@ uint16_t KellerLD::readMemoryMap(uint8_t mtp_address) {
 		fprintf(stderr, "Error writing to Keller LD\n");
 		exit(1);
 	}
-	usleep(1000);
+	usleep(500);
 
 	if (read(fd, buf, 3) != 3)
 	{
