@@ -8,8 +8,6 @@
 #include <cmath>
 
 #include "KellerLD.h"
-#include "utility.cpp"
-
 
 #define LD_ADDR                     0x40
 #define LD_REQUEST                  0xAC
